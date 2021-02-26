@@ -3032,6 +3032,10 @@ gum_exec_block_virtualize_branch_insn (GumExecBlock * block,
     gum_x86_relocator_skip_one_no_label (gc->relocator);
     gum_exec_block_write_call_invoke_code (block, &target, gc);
   }
+  else if (insn->ci->id == X86_INS_JMP) {
+    if (ctx->stalker->any_probes_attached)
+      gum_exec_block_write_call_probe_code (block, &target, gc);
+  }
   else if (insn->ci->id == X86_INS_JECXZ || insn->ci->id == X86_INS_JRCXZ)
   {
     gpointer is_true, is_false;
